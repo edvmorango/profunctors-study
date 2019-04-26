@@ -1,0 +1,8 @@
+.stack-work/
+profunctors-study.cabal
+*~
+tags/
+tags
+dist
+dist/*
+

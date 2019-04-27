@@ -30,9 +30,10 @@ f <$> (((->) Int) Int) = ((->) Int) f Int
 ((->) Int) String =  (Int -> String) . (a -> Int)
 
 
-`a` inside `((->) a)` is part of the functorial structure
 
-so functors are limited to map the implicit `b`
+`r` inside `((->) r) a` is part of the functorial structure
+
+so functors are limited to map `a` to `b`
 
 
 -}
@@ -45,9 +46,7 @@ arrowF = (* 2)
 class Contravariant f where
   contramap :: (b -> a) -> f a -> f b
 
-{-
-
--}
+-- Don't have functor instance
 newtype Op b a =
   Op (a -> b)
 
@@ -59,14 +58,24 @@ contramap (b -> a) (Op (a -> b)) =  (a -> b) (b -> a)
 (a -> b)  (b -> a) = b -> b
 
 -}
-instance Contravariant (Op z) where
+instance Contravariant (Op b) where
   contramap f (Op g) = Op (g . f)
 
-{-
-  Op Int [a] = Op ([a] -> Int)
--}
-cLength :: Op Int [a]
-cLength = Op Prelude.length
+--Op Int [a] = Op ([a] -> Int)
+listLength :: Op Int [a]
+listLength = Op Prelude.length
 
+{-
+ newtype Op b a = Op (a -> b)
+ newtype Op Int a = Op (a -> Int)
+
+ listLength :: Op Int [a] = Op ([a] -> Int)
+
+ setToList :: Opt Int (Set a)  = contramap (toList) (listLength)
+
+ contramap (toList) (Op ([a] -> Int)) = Op $ ([a] -> Int) . toList
+ contramap (toList) (Op ([a] -> Int)) = Op $ ([a] -> Int) . ((Set a) -> [a])
+ contramap (toList) (Op ([a] -> Int)) = Op $ (Set a) -> Int
+-}
 setToList :: Op Int (Set a)
-setToList = contramap toList cLength
+setToList = contramap (toList) listLength

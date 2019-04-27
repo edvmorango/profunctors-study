@@ -24,7 +24,7 @@ import           Data.Set
 
   ---------------------------------------------------------------------
 
-  runBehavior :: Behavior a -> [a] -> IO ()
+  runBehavior :: Behavior String -> [String] -> IO ()
 
   [String] -> IO ()
   runBehavior = printer ["ab"]  -- ab
@@ -32,8 +32,6 @@ import           Data.Set
   [String] -> IO ()
   runBehavior = contramap ((fmap toUpper) printer) ["ab"] -- AB
 
-  [Int] -> IO ()
-  runBehavior = contramap ((show) printer)) [1] -- 1
 
   [String] -> IO ()
   runBehavior = contramap ((head) printer) ["abc"] -- a
@@ -178,6 +176,3 @@ upperPrinterBehavior = runBehavior upperPrinter messages
 
 numberPrinter :: Behavior String
 numberPrinter = contramap (\s -> show s) printer
-
-numberPrinterBehavior :: IO ()
-numberPrinterBehavior = runBehavior numberPrinter [1, 2, 3, 4, 5]

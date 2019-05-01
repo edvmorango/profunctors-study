@@ -174,5 +174,11 @@ upperPrinter = contramap (\s -> toUpper <$> s) printer
 upperPrinterBehavior :: IO ()
 upperPrinterBehavior = runBehavior upperPrinter messages
 
-numberPrinter :: Behavior String
-numberPrinter = contramap (\s -> show s) printer
+intToString :: Int -> String
+intToString = show
+
+numberPrinter :: Behavior Int
+numberPrinter = contramap (intToString) printer
+
+numberPrinterBehavior :: IO ()
+numberPrinterBehavior = runBehavior numberPrinter [1, 2, 3]

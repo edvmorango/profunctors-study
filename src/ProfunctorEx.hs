@@ -19,3 +19,6 @@ stringToString = id
 
 upperHead :: String -> Char
 upperHead = dimap (fmap toUpper) (head) stringToString
+
+halfOfTriple :: Int -> Double
+halfOfTriple = dimap (* 3) ((/ 2) . fromIntegral) (id)
